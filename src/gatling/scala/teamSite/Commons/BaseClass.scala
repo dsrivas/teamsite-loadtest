@@ -1,0 +1,18 @@
+package teamSite.Commons
+
+import io.gatling.core.Predef.{Simulation, _}
+import io.gatling.http.Predef._
+
+
+class BaseClass extends Simulation {
+
+  protected val csvFeeder = csv("Testdata.csv").eager.random
+
+  protected val httpProtocol = http
+    .baseUrl("https://basketball.synergysportstech.com/api") // Here is the root for all relative URLs
+    .contentTypeHeader("application/json")
+    .userAgentHeader(
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:16.0) Gecko/20100101 Firefox/16.0"
+    )
+    .authorizationHeader("Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjE1RjUxREM1RTc3MkM1RUNGNjc5NEY2RThEQzI1RDY2MzBGMEVCQ0FSUzI1NiIsInR5cCI6ImF0K2p3dCIsIng1dCI6IkZmVWR4ZWR5eGV6MmVVOXVqY0pkWmpEdzY4byJ9.eyJuYmYiOjE2NTU5MDUyOTksImV4cCI6MTY1NTkwODg5OSwiaXNzIjoiaHR0cHM6Ly9hdXRoLnN5bmVyZ3lzcG9ydHN0ZWNoLmNvbSIsImF1ZCI6WyJhcGkuYmFza2V0YmFsbCIsImFwaS5jb25maWciLCJhcGkuc2VjdXJpdHkiLCJhcGkuc3BvcnQiLCJodHRwczovL2F1dGguc3luZXJneXNwb3J0c3RlY2guY29tL3Jlc291cmNlcyJdLCJjbGllbnRfaWQiOiJjbGllbnQudGVhbXNpdGUiLCJzdWIiOiI2MjJhMzU1M2RkMDdjMmVkYmIzYzJjZGUiLCJhdXRoX3RpbWUiOjE2NTU4ODM4MzIsImlkcCI6ImxvY2FsIiwiZW1haWwiOiJkLnNyaXZhc3RhdkBzcG9ydHJhZGFyLmNvbSIsIm5hbWUiOiJTcml2YXN0YXYgRGhhcm1lbmRlciIsInNpZCI6IjE0MDI1MjE2Q0MxNEJBMDFFMEUzNUMxNDBDNDVBQTdDIiwiaWF0IjoxNjU1ODgzODM2LCJzY29wZSI6WyJvcGVuaWQiLCJhcGkuY29uZmlnIiwiYXBpLnNlY3VyaXR5IiwiYXBpLmJhc2tldGJhbGwiLCJhcGkuc3BvcnQiLCJvZmZsaW5lX2FjY2VzcyJdLCJhbXIiOlsicHdkIl19.AIqj2F_GtHhi-L0Fc0wgq1z7z9RiYaJ-U4Sys-W5YM89hHphXY4apViRjQIRCz16EeJFKj38HhFGscR-nMZ6vTgeTjAM7TUZH1nibLmy90P86L9oc5GhzLzoxJX0YaJWQELXQcmNl4KbUD2kKHrgwlVyZNqCZHuJ63OHAlHc5hbPIVaFbJNdrGb33YjaTI528NZjjEKZ1JB_eK0HG8WZlFNrjDJWT7N3TS8bH8ZkjSo8J1Bof2Iq_HwoKQ_iYdHXWNpZqdINw9wMjV_-mi2Hy3guhdx8UA2Doa4Ipc6s3T6FJtHZiGxnTlS8MkkwpBRE4gFmmWRZCbe1Ag9v28-8Tw")
+}
