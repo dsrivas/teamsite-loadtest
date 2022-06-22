@@ -1,7 +1,7 @@
 logback.xml
-*gradle
 gradle
+gradlew
 build
 .idea/
-gradlew
+.gradle/
 gradlew.bat
