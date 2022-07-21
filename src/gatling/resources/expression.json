@@ -1,0 +1,11 @@
+{
+  "expressions": [
+    {
+      "eventsExpressionString": "play eq 1 and league eq 1 and season eq 2018 and offensiveteam eq 15 group offensiveplayer, team",
+      "pbpsExpressionString": "play eq 1 and league eq 1 and season eq 2018 and (hometeam eq 15 or awayteam eq 15) group pplayer, team"
+    },
+    {
+      "eventsExpressionString": "play eq 1 and league eq 1 and season eq 2018 and offensiveteam eq 15 group team"
+    }
+  ]
+}
