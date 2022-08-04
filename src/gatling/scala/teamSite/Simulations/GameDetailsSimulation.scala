@@ -37,13 +37,24 @@ class GameDetailsSimulation extends BaseClass {
           .check(status.is(200))
       )
 
-  val cumulativeReports =
+  val cumulativeReports_Old =
     scenario("Cumulative Reports")
       .exec(
         http("Cumulative Reports")
           .post("/reports/pbpscombined")
           .body(
             RawFileBody("expression.json")
+          )
+          .check(status.is(200))
+      )
+
+  val cumulativeReports_New  =
+    scenario("Cumulative Reports")
+      .exec(
+        http("Cumulative Reports")
+          .post("/possessionreports")
+          .body(
+            RawFileBody("expression_new.json")
           )
           .check(status.is(200))
       )
@@ -96,20 +107,31 @@ class GameDetailsSimulation extends BaseClass {
 //  ).protocols(httpProtocol)
 
 //  setUp(
-//    reports.inject(rampUsersPerSec(2).to(2).during(10.seconds)),
-//    PlayersWithBoxScore.inject(rampUsersPerSec(2).to(5).during(10.seconds)),
-//    leaderboards.inject(rampUsersPerSec(2).to(5).during(10.seconds)),
-//    bulkGames.inject(rampUsersPerSec(2).to(5).during(10.seconds)),
-//    bulkTeams.inject(rampUsersPerSec(2).to(5).during(10.seconds)),
-//    cumulativeReports.inject(rampUsersPerSec(2).to(5).during(10.seconds))
+//    reports.inject(rampUsersPerSec(2).to(12).during(10.seconds)),
+//    PlayersWithBoxScore.inject(rampUsersPerSec(2).to(12).during(10.seconds)),
+//    leaderboards.inject(rampUsersPerSec(2).to(12).during(10.seconds)),
+//    bulkGames.inject(rampUsersPerSec(2).to(12).during(10.seconds)),
+//    bulkTeams.inject(rampUsersPerSec(2).to(12).during(10.seconds)),
+//    cumulativeReports.inject(atOnceUsers(2))
+//  ).protocols(httpProtocol)
+
+//  setUp(
+//    reports.inject(constantUsersPerSec(2).during(10.seconds)),
+//    PlayersWithBoxScore.inject(constantUsersPerSec(2).during(10.seconds)),
+//    leaderboards.inject(constantUsersPerSec(2).during(10.seconds)),
+//    bulkGames.inject(constantUsersPerSec(2).during(10.seconds)),
+//    bulkTeams.inject(constantUsersPerSec(2).during(10.seconds)),
+//    cumulativeReports.inject(constantUsersPerSec(1).during(10.seconds))
 //  ).protocols(httpProtocol)
 
   setUp(
-    reports.inject(constantUsersPerSec(2).during(20.seconds)),
-    PlayersWithBoxScore.inject(constantUsersPerSec(2).during(20.seconds)),
-    leaderboards.inject(constantUsersPerSec(2).during(20.seconds)),
-    bulkGames.inject(constantUsersPerSec(2).during(20.seconds)),
-    bulkTeams.inject(constantUsersPerSec(2).during(20.seconds)),
-    cumulativeReports.inject(constantUsersPerSec(1).during(20.seconds))
+    reports.inject(atOnceUsers(10)),
+    PlayersWithBoxScore.inject(atOnceUsers(100)),
+    leaderboards.inject(atOnceUsers(10)),
+    bulkGames.inject(atOnceUsers(10)),
+    bulkTeams.inject(atOnceUsers(10)),
+    cumulativeReports_New.inject(atOnceUsers(2))
+    //    cumulativeReports_Old.inject(atOnceUsers(2)),
   ).protocols(httpProtocol)
+
 }
