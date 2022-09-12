@@ -9,23 +9,6 @@ import scala.language.postfixOps
 
 class GameDetailsSimulation extends BaseClass {
 
-//  val leagues =
-//    scenario("Leagues")
-//      .exec(
-//        http("Leagues")
-//          .get("/leagues")
-//          .check(status.is(200))
-//      )
-
-//  val sports =
-//    scenario("Sports")
-//      .feed(sport)
-//      .exec(
-//        http("GameDetails")
-//          .get("/sports/${sportId}/seasons?take=2048")
-//          .check(status.is(200))
-//        )
-
   val reports =
     scenario("Reports")
       .exec(
@@ -48,14 +31,18 @@ class GameDetailsSimulation extends BaseClass {
           .check(status.is(200))
       )
 
-  val cumulativeReports_New  =
-    scenario("Cumulative Reports")
+  scenario("Cumulative Reports")
+      .feed(leaderboard)
       .exec(
         http("Cumulative Reports")
           .post("/possessionreports")
-          .body(
-            RawFileBody("expression_new.json")
-          )
+          .body(StringBody("""{
+                             |  "expressions": [
+                             |    "play eq 1 and league eq oid(${leagueId}) and season eq oid(${seasonId})  and playactorteam eq oid(${teamId}) group playactorplayer, playactorteam",
+                             |    "play eq 1 and league eq oid(${leagueId}) and season eq oid(${seasonId})  and offensiveteam eq oid(${teamId})"
+                             |  ],
+                             |  "includePlayByPlayStats": true
+                             |}""".stripMargin)).asJson
           .check(status.is(200))
       )
 
@@ -97,33 +84,6 @@ class GameDetailsSimulation extends BaseClass {
           .check(status.is(200))
       )
 
-
-
-//  setUp(
-//    cumulativeReports.inject(atOnceUsers(20)),
-//    cumulativeReports.inject(rampUsers(20).during(10 seconds)),
-//    cumulativeReports.inject(rampUsers(15).during(10 seconds)),
-//    cumulativeReports.inject(rampUsers(100).during(40 minutes))
-//  ).protocols(httpProtocol)
-
-//  setUp(
-//    reports.inject(rampUsersPerSec(2).to(12).during(10.seconds)),
-//    PlayersWithBoxScore.inject(rampUsersPerSec(2).to(12).during(10.seconds)),
-//    leaderboards.inject(rampUsersPerSec(2).to(12).during(10.seconds)),
-//    bulkGames.inject(rampUsersPerSec(2).to(12).during(10.seconds)),
-//    bulkTeams.inject(rampUsersPerSec(2).to(12).during(10.seconds)),
-//    cumulativeReports.inject(atOnceUsers(2))
-//  ).protocols(httpProtocol)
-
-//  setUp(
-//    reports.inject(constantUsersPerSec(2).during(10.seconds)),
-//    PlayersWithBoxScore.inject(constantUsersPerSec(2).during(10.seconds)),
-//    leaderboards.inject(constantUsersPerSec(2).during(10.seconds)),
-//    bulkGames.inject(constantUsersPerSec(2).during(10.seconds)),
-//    bulkTeams.inject(constantUsersPerSec(2).during(10.seconds)),
-//    cumulativeReports.inject(constantUsersPerSec(1).during(10.seconds))
-//  ).protocols(httpProtocol)
-
   setUp(
     reports.inject(atOnceUsers(10)),
     PlayersWithBoxScore.inject(atOnceUsers(100)),
@@ -131,7 +91,6 @@ class GameDetailsSimulation extends BaseClass {
     bulkGames.inject(atOnceUsers(10)),
     bulkTeams.inject(atOnceUsers(10)),
     cumulativeReports_New.inject(atOnceUsers(2))
-    //    cumulativeReports_Old.inject(atOnceUsers(2)),
   ).protocols(httpProtocol)
 
 }
