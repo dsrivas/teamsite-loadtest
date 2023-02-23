@@ -89,8 +89,7 @@ class GameDetailsSimulation extends BaseClass {
     PlayersWithBoxScore.inject(atOnceUsers(100)),
     leaderboards.inject(atOnceUsers(10)),
     bulkGames.inject(atOnceUsers(10)),
-    bulkTeams.inject(atOnceUsers(10)),
-    cumulativeReports_New.inject(atOnceUsers(2))
+    bulkTeams.inject(atOnceUsers(10))
   ).protocols(httpProtocol)
 
 }
